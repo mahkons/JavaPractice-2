@@ -1,9 +1,6 @@
 package ru.hse.java.team;
 
-import java.util.AbstractMap;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,9 +49,13 @@ public final class SecondPartTasks {
     // Вы крупный поставщик продуктов. Каждая торговая сеть делает вам заказ в виде Map<Товар, Количество>.
     // Необходимо вычислить, какой товар и в каком количестве надо поставить.
     public static Map<String, Integer> calculateGlobalOrder(List<Map<String, Integer>> orders) {
-        List<Map.Entry<String, Integer>> result = orders.stream()
-                .flatMap(e -> e.entrySet().stream())
-                .collect(Collectors.toMap();
+        Map<String, Integer> resultingMap = new HashMap<>();
 
+        var gg = orders.stream()
+                .flatMap(e -> e.entrySet().stream())
+                .map(e -> resultingMap.containsKey(e.getKey()) ?
+                        resultingMap.put(e.getKey(), resultingMap.get(e.getKey()) + e.getValue())
+                        : resultingMap.put(e.getKey(), e.getValue())).collect(Collectors.toList());
+        return resultingMap;
     }
 }

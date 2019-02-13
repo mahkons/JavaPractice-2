@@ -1,5 +1,6 @@
 package ru.hse.java.team;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -54,6 +55,10 @@ public class SecondPartTasksTest {
 
     @Test
     public void testCalculateGlobalOrder() {
-        fail();
+        var askOne = ImmutableMap.<String, Integer>builder().put("a", 1).put("b", 2).build();
+        var askTwo = ImmutableMap.<String, Integer>builder().put("b", 3).put("c", 2).build();
+        var askThree = ImmutableMap.<String, Integer>builder().put("a", 5).put("A", 2).build();
+        var expected = ImmutableMap.<String, Integer>builder().put("a", 6).put("A", 2).put("b", 5).put("c", 2).build();
+        assertEquals(expected, calculateGlobalOrder(List.of(askOne, askTwo, askThree)));
     }
 }
