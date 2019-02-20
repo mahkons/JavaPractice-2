@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SerializationTest {
 
-    private static class BoolAndIntValue {
+    public static class BoolAndIntValue {
         boolean flag = true;
         int value = 179;
 
@@ -31,7 +31,7 @@ class SerializationTest {
         }
     }
 
-    private static class PrivateLongAdded {
+    public static class PrivateLongAdded {
         private long some = 579;
 
         public long getSome() {
@@ -52,7 +52,7 @@ class SerializationTest {
         }
     }
 
-    private static class LabeledValue extends BoolAndIntValue {
+    public static class LabeledValue extends BoolAndIntValue {
         protected String best = "The Great String!";
 
         @Override
@@ -70,7 +70,7 @@ class SerializationTest {
         }
     }
 
-    private static class BigClass {
+    public static class BigClass {
         public boolean a = false;
         public byte b = 10;
         public char c = 'z';

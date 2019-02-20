@@ -47,7 +47,6 @@ public class Serialization {
             } else if (field.getType() == String.class) {
                 dataStream.writeUTF((String)field.get(object));
             } else {
-                System.out.println(field.getType());
                 throw new IllegalArgumentException("object have a field which is both non-primitive and not a string");
             }
         }
