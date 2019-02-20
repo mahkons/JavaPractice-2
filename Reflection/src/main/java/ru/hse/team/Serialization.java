@@ -1,7 +1,5 @@
 package ru.hse.team;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,10 +7,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
+/**
+ *
+ */
 public class Serialization {
 
     private Serialization() {}
 
+    /**
+     * @param clazz
+     * @return
+     */
     private static List<Field> getAllFields(Class<?> clazz) {
         List<Field> fields = new ArrayList<Field>();
         for (Class<?> c = clazz; c != null; c = c.getSuperclass()) {
@@ -21,7 +28,14 @@ public class Serialization {
         return fields;
     }
 
-    public static void serialize(@NotNull Object object, @NotNull OutputStream outputStream) throws IllegalAccessException, IOException {
+    /**
+     * @param object
+     * @param outputStream
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
+    public static void serialize(@NotNull Object object, @NotNull OutputStream outputStream)
+            throws IllegalAccessException, IOException {
 
         var dataStream = new DataOutputStream(outputStream);
         List<Field> allFields = getAllFields(object.getClass());
@@ -47,13 +61,26 @@ public class Serialization {
             } else if (field.getType() == String.class) {
                 dataStream.writeUTF((String)field.get(object));
             } else {
-                throw new IllegalArgumentException("object have a field which is both non-primitive and not a string");
+                throw new IllegalArgumentException("object have a field " +
+                        "which is both non-primitive and not a string");
             }
         }
     }
 
+    /**
+     * @param inputStream
+     * @param clazz
+     * @param <T>
+     * @return
+     * @throws IllegalAccessException
+     * @throws IOException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws InvocationTargetException
+     */
     public static <T> T deserialize(@NotNull InputStream inputStream, @NotNull Class<T> clazz)
-            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+            throws IllegalAccessException, IOException, NoSuchMethodException,
+            InstantiationException, InvocationTargetException {
         var dataStream = new DataInputStream(inputStream);
         List<Field> allFields = getAllFields(clazz);
         T object = clazz.getDeclaredConstructor().newInstance();
@@ -79,7 +106,8 @@ public class Serialization {
             } else if (field.getType() == String.class) {
                 field.set(object, dataStream.readUTF());
             } else {
-                throw new IllegalArgumentException("object have a field which is both non-primitive and not a string");
+                throw new IllegalArgumentException("object have a field " +
+                        "which is both non-primitive and not a string");
             }
         }
         return object;
