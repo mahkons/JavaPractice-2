@@ -10,15 +10,20 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
+ * Class for serializing objects.
+ * Serializes all fields
+ *  including private and inherited
+ * Uses reflection to get class fields
+ * Class ought to have only primitive and string fields
+ *   and have public constructor with no parameters
  */
 public class Serialization {
 
     private Serialization() {}
 
     /**
-     * @param clazz
-     * @return
+     * Returns List of all fields in class.
+     * Includes private and inherited fields
      */
     private static List<Field> getAllFields(Class<?> clazz) {
         List<Field> fields = new ArrayList<Field>();
@@ -29,10 +34,10 @@ public class Serialization {
     }
 
     /**
-     * @param object
-     * @param outputStream
-     * @throws IllegalAccessException
-     * @throws IOException
+     * Serializes given object.
+     * It ought to have only primitive or string fields
+     * @throws IOException when problems with writing to given output stream occurred
+     * @throws IllegalArgumentException when class contains non-primitive or non-string fields
      */
     public static void serialize(@NotNull Object object, @NotNull OutputStream outputStream)
             throws IllegalAccessException, IOException {
@@ -68,15 +73,14 @@ public class Serialization {
     }
 
     /**
-     * @param inputStream
-     * @param clazz
-     * @param <T>
-     * @return
-     * @throws IllegalAccessException
-     * @throws IOException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
+     * Deserializes object of given class from given input stream.
+     * Class ought to have only primitive and string fields
+     *  and have public constructor with no parameters
+     * @throws IOException when problems with writing to given output stream occurred
+     * @throws IllegalArgumentException when class contains non-primitive or non-string fields
+     * @throws IllegalAccessException if constructor with no parameters is not public
+     * @throws NoSuchMethodException if there is no constructor with no parameters
+     * @throws InvocationTargetException if exception occured during class constructing
      */
     public static <T> T deserialize(@NotNull InputStream inputStream, @NotNull Class<T> clazz)
             throws IllegalAccessException, IOException, NoSuchMethodException,
