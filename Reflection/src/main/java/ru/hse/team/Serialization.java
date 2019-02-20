@@ -3,9 +3,11 @@ package ru.hse.team;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -40,13 +42,18 @@ public class Serialization {
      * @throws IllegalArgumentException when class contains non-primitive or non-string fields
      */
     public static void serialize(@NotNull Object object, @NotNull OutputStream outputStream)
-            throws IllegalAccessException, IOException {
+            throws IllegalAccessException, IOException, NoSuchElementException, NoSuchFieldException {
 
         var dataStream = new DataOutputStream(outputStream);
         List<Field> allFields = getAllFields(object.getClass());
 
         for (Field field : allFields) {
+
             field.setAccessible(true);
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
             if (field.getType() == boolean.class) {
                 dataStream.writeBoolean(field.getBoolean(object));
             } else if (field.getType() == byte.class) {
@@ -84,13 +91,18 @@ public class Serialization {
      */
     public static <T> T deserialize(@NotNull InputStream inputStream, @NotNull Class<T> clazz)
             throws IllegalAccessException, IOException, NoSuchMethodException,
-            InstantiationException, InvocationTargetException {
+            InstantiationException, InvocationTargetException, NoSuchFieldException {
         var dataStream = new DataInputStream(inputStream);
         List<Field> allFields = getAllFields(clazz);
         T object = clazz.getDeclaredConstructor().newInstance();
 
         for (Field field : allFields) {
+
             field.setAccessible(true);
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
             if (field.getType() == boolean.class) {
                 field.setBoolean(object, dataStream.readBoolean());
             } else if (field.getType() == byte.class) {

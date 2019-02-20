@@ -14,7 +14,7 @@ class SerializationTest {
 
     public static class BoolAndIntValue {
         boolean flag = true;
-        int value = 179;
+        private final static int value = 179;
 
         @Override
         public boolean equals(Object o) {
@@ -122,7 +122,7 @@ class SerializationTest {
 
     @Test
     void serializeAndDeserialize_simple()
-            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException, NoSuchFieldException {
         var byteArrayOutputStream = new ByteArrayOutputStream(1000);
         Serialization.serialize(boolAndIntValue, byteArrayOutputStream);
         assertEquals(boolAndIntValue, Serialization.deserialize(
@@ -131,7 +131,7 @@ class SerializationTest {
 
     @Test
     void serializeAndDeserialize_withPrivate()
-            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException, NoSuchFieldException {
         var byteArrayOutputStream = new ByteArrayOutputStream(1000);
         Serialization.serialize(privateLongAdded, byteArrayOutputStream);
         assertEquals(privateLongAdded, Serialization.deserialize(
@@ -140,7 +140,7 @@ class SerializationTest {
 
     @Test
     void serializeAndDeserialize_inheritance()
-            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException, NoSuchFieldException {
         var byteArrayOutputStream = new ByteArrayOutputStream(1000);
         Serialization.serialize(labeledValue, byteArrayOutputStream);
         assertEquals(labeledValue, Serialization.deserialize(
@@ -149,7 +149,7 @@ class SerializationTest {
 
     @Test
     void serializeAndDeserialize_allProbableFieldTypes()
-            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+            throws IllegalAccessException, IOException, NoSuchMethodException, InstantiationException, InvocationTargetException, NoSuchFieldException {
         var byteArrayOutputStream = new ByteArrayOutputStream(1000);
         Serialization.serialize(bigClass, byteArrayOutputStream);
         assertEquals(bigClass, Serialization.deserialize(
