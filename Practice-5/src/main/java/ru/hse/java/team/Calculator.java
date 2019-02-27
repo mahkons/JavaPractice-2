@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.function.DoubleBinaryOperator;
 import java.util.function.IntBinaryOperator;
 
 public class Calculator {
@@ -24,7 +23,7 @@ public class Calculator {
         private final String symbol;
         private final IntBinaryOperator binaryOperator;
 
-        private Operation(final String symbol, final IntBinaryOperator binaryOperator) {
+        Operation(final String symbol, final IntBinaryOperator binaryOperator) {
             this.symbol = symbol;
             this.binaryOperator = binaryOperator;
         }
@@ -59,18 +58,18 @@ public class Calculator {
                 stack.push(number);
             } else {
                 String token = scanner.next();
-                if (Operation.fromString(token) == null) {
-                    stack.clear();
-                    throw new IllegalArgumentException("String parse error: not a Double, and not a valid operation");
-                }
                 Operation operation = Operation.fromString(token);
+                if (operation == null) {
+                    stack.clear();
+                    throw new IllegalArgumentException("String parse error: not an Integer, and not a valid operation");
+                }
                 if (stack.size() < 2) {
                     stack.clear();
                     throw new IllegalArgumentException("String parse error: not enough numbers in stack to perform operation");
                 }
                 Integer firstNumber = stack.pop();
                 Integer secondNumber = stack.pop();
-                stack.push(operation.applyAsInt(firstNumber, secondNumber));
+                stack.push(operation.applyAsInt(secondNumber, firstNumber));
             }
         }
         if (stack.empty()) {
