@@ -10,31 +10,29 @@ import static org.mockito.Mockito.*;
 
 class CalculatorTest {
 
-    private static final double EPSILON = 1e-6;
-
     @Test
     void simplePlusOperation() {
-        Stack<Double> mockedStack = mock(Stack.class);
-        when(mockedStack.pop()).thenReturn((double) 3,(double) 2, (double) 5);
+        Stack<Integer> mockedStack = mock(Stack.class);
+        when(mockedStack.pop()).thenReturn(3,2, 5);
 
         InOrder inOrder = inOrder(mockedStack);
-        inOrder.verify(mockedStack).push((double) 2);
-        inOrder.verify(mockedStack).push((double) 3);
-        inOrder.verify(mockedStack).push((double) 5);
+        inOrder.verify(mockedStack).push(2);
+        inOrder.verify(mockedStack).push(3);
+        inOrder.verify(mockedStack).push(5);
 
         var calculator = new Calculator(mockedStack);
-        assertEquals(5.0, calculator.evaluate("2 3 +"), EPSILON);
+        assertEquals(5, calculator.evaluate("2 3 +"));
     }
 
     @Test
     void simpleMinusOperation() {
-        Stack<Double> mockedStack = mock(Stack.class);
-        when(mockedStack.pop()).thenReturn((double) 3, (double) 2, (double) -1);
+        Stack<Integer> mockedStack = mock(Stack.class);
+        when(mockedStack.pop()).thenReturn(3, 2, -1);
 
         InOrder inOrder = inOrder(mockedStack);
-        inOrder.verify(mockedStack).push((double) 2);
-        inOrder.verify(mockedStack).push((double) 3);
-        inOrder.verify(mockedStack).push((double) -1);
+        inOrder.verify(mockedStack).push(2);
+        inOrder.verify(mockedStack).push(3);
+        inOrder.verify(mockedStack).push(-1);
 
         var calculator = new Calculator(mockedStack);
         assertEquals(-1, calculator.evaluate("2 3 -"));
@@ -42,11 +40,11 @@ class CalculatorTest {
 
     @Test
     void numberWithUnaryMinus() {
-        Stack<Double> mockedStack = mock(Stack.class);
-        when(mockedStack.pop()).thenReturn((double) -1);
+        Stack<Integer> mockedStack = mock(Stack.class);
+        when(mockedStack.pop()).thenReturn(-1);
 
         InOrder inOrder = inOrder(mockedStack);
-        inOrder.verify(mockedStack).push((double) -1);
+        inOrder.verify(mockedStack).push(-1);
 
         var calculator = new Calculator(mockedStack);
         assertEquals(-1, calculator.evaluate("-1"));
@@ -54,16 +52,15 @@ class CalculatorTest {
 
     @Test
     void twoOperations() {
-        Stack<Double> mockedStack = mock(Stack.class);
-        when(mockedStack.pop()).thenReturn((double) 3, (double) 2, (double) 2,
-                (double) 5, (double) 7);
+        Stack<Integer> mockedStack = mock(Stack.class);
+        when(mockedStack.pop()).thenReturn(3, 2, 2, 5, 7);
 
         InOrder inOrder = inOrder(mockedStack);
-        inOrder.verify(mockedStack).push((double) 2);
-        inOrder.verify(mockedStack).push((double) 3);
-        inOrder.verify(mockedStack).push((double) 5);
-        inOrder.verify(mockedStack).push((double) 2);
-        inOrder.verify(mockedStack).push((double) 7);
+        inOrder.verify(mockedStack).push(2);
+        inOrder.verify(mockedStack).push(3);
+        inOrder.verify(mockedStack).push(5);
+        inOrder.verify(mockedStack).push(2);
+        inOrder.verify(mockedStack).push(7);
 
         var calculator = new Calculator(mockedStack);
         assertEquals(-1, calculator.evaluate("2 3 + 2 +"));
