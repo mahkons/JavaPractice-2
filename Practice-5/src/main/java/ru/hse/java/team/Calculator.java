@@ -29,18 +29,12 @@ public class Calculator {
         }
 
         public static Operation fromString(final String symbol) {
-            switch (symbol) {
-                case "+" :
-                    return PLUS;
-                case "-":
-                    return MINUS;
-                case "*":
-                    return MULTIPLY;
-                case "/":
-                    return DIVIDE;
-                default:
-                    return null;
+            for (Operation operation : Operation.values()) {
+                if (operation.toString().equals(symbol)) {
+                    return operation;
+                }
             }
+            return null;
         }
 
         public String getSymbol() {
