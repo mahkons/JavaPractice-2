@@ -4,7 +4,7 @@ public class SingleThreadLazy<T> implements Lazy<T> {
     private T result;
     private Supplier<T> supplier;
 
-    public SingleThreadLazy(Supplier<T> supplier) {
+    public SingleThreadLazy(@NotNull Supplier<T> supplier) {
         this.supplier = supplier;
     }
 
