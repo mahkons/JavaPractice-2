@@ -65,11 +65,11 @@ class SingletonLazyTest {
             Supplier<Object> supplier = new NullSupplier();
             Lazy lazy = LazyFactory.createSingletonLazy(supplier);
             Runnable runnable = runnableForAnySupplier(lazy);
-            Thread actor_first = new Thread();
-            Thread actor_second = new Thread();
+            Thread actorFirst = new Thread();
+            Thread actorSecond = new Thread();
 
-            actor_first.run();
-            actor_second.run();
+            actorFirst.run();
+            actorSecond.run();
         }
     }
 
@@ -79,11 +79,11 @@ class SingletonLazyTest {
             Supplier<Object> supplier = new SimpleSupplier();
             Lazy lazy = LazyFactory.createSingletonLazy(supplier);
             Runnable runnable = runnableForAnySupplier(lazy);
-            Thread actor_first = new Thread();
-            Thread actor_second = new Thread();
+            Thread actorFirst = new Thread();
+            Thread actorSecond = new Thread();
 
-            actor_first.run();
-            actor_second.run();
+            actorFirst.run();
+            actorSecond.run();
         }
     }
 
@@ -93,11 +93,11 @@ class SingletonLazyTest {
             Supplier<Object> supplier = new SupplierWithCounter();
             Lazy lazy = LazyFactory.createSingletonLazy(supplier);
             Runnable runnable = runnableForAnySupplier(lazy);
-            Thread actor_first = new Thread();
-            Thread actor_second = new Thread();
+            Thread actorFirst = new Thread();
+            Thread actorSecond = new Thread();
 
-            actor_first.run();
-            actor_second.run();
+            actorFirst.run();
+            actorSecond.run();
         }
     }
 

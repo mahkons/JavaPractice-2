@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 public class SingletonLazy<T> implements Lazy<T> {
 
     private volatile Supplier<T> supplier;
-    private volatile T value;
+    private T value;
 
     public SingletonLazy(@NotNull Supplier<T> supplier) {
         this.supplier = supplier;
