@@ -44,26 +44,42 @@ class SingletonLazyTest {
         }
     }
 
-
-    @Test
-    void nullSuppler() {
-        final Supplier<Object> supplier = new SimpleSupplier();
+    private <T> void testAnySupplier(final Supplier<T> supplier) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Lazy lazy = LazyFactory.createSingletonLazy()
+                Lazy lazy = LazyFactory.createSingletonLazy(supplier);
+                Object value_first = lazy.get();
+                Object value_second = lazy.get();
+                if (value_first != value_second) {
+                    throw new AssertionError("lazy returned different objects");
+                }
             }
+        };
+
+        Thread actor_first = new Thread(runnable);
+        Thread actor_second = new Thread(runnable);
+
+        for (int i = 0; i < 100_000; i++) {
+            actor_first.run();
+            actor_second.run();
         }
+    }
+
+
+    @Test
+    void nullSuppler() {
+        testAnySupplier(new NullSupplier());
     }
 
     @Test
     void simpleSupplier() {
-
+        testAnySupplier(new SimpleSupplier());
     }
 
     @Test
     void supplerWithCounter() {
-
+        testAnySupplier(new SupplierWithCounter());
     }
 
 }
