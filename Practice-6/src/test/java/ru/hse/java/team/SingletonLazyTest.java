@@ -48,7 +48,7 @@ class SingletonLazyTest {
     @Test
     void nullSuppler() {
         final Supplier<Object> supplier = new SimpleSupplier();
-        
+
     }
 
     @Test

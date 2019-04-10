@@ -6,6 +6,10 @@ import java.util.function.Supplier;
 
 public class LazyFactory {
 
+    public static <T> Lazy<T> createSingleThreadLazy(Supplier<T> supplier) {
+        throw new NotImplementedException();
+    }
+
     public static <T> Lazy<T> createSingletonLazy(Supplier<T> supplier) {
 
         throw new NotImplementedException();
@@ -15,4 +19,5 @@ public class LazyFactory {
 
         throw new NotImplementedException();
     }
+
 }
