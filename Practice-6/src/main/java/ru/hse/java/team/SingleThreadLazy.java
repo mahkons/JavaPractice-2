@@ -1,5 +1,9 @@
 package ru.hse.java.team;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
+
 public class SingleThreadLazy<T> implements Lazy<T> {
     private T result;
     private Supplier<T> supplier;
