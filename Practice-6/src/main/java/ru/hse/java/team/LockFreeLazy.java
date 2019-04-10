@@ -19,7 +19,7 @@ public class LockFreeLazy<T> implements Lazy<T> {
         Supplier<T> supplierCopy = supplier;
         if (supplierCopy != null) {
             supplier = null;
-            value.compareAndSet(null, supplier.get());
+            value.compareAndSet(null, supplierCopy.get());
         }
         return value.get();
     }

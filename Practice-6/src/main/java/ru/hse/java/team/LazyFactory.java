@@ -11,13 +11,11 @@ public class LazyFactory {
     }
 
     public static <T> Lazy<T> createSingletonLazy(Supplier<T> supplier) {
-
         return new SingletonLazy<>(supplier);
     }
 
     public static <T> Lazy<T> createLockFreeLazy(Supplier<T> supplier) {
-
-        throw new NotImplementedException();
+        return new LockFreeLazy<>(supplier);
     }
 
 }
