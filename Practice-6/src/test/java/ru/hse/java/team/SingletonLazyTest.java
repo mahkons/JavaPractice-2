@@ -44,11 +44,10 @@ class SingletonLazyTest {
         }
     }
 
-    private <T> void testAnySupplier(final Supplier<T> supplier) {
-        Runnable runnable = new Runnable() {
+    private <T> Runnable runnableForAnySupplier(Lazy<Object> lazy) {
+        return new Runnable() {
             @Override
             public void run() {
-                Lazy lazy = LazyFactory.createSingletonLazy(supplier);
                 Object value_first = lazy.get();
                 Object value_second = lazy.get();
                 if (value_first != value_second) {
@@ -56,30 +55,50 @@ class SingletonLazyTest {
                 }
             }
         };
-
-        Thread actor_first = new Thread(runnable);
-        Thread actor_second = new Thread(runnable);
-
-        for (int i = 0; i < 100_000; i++) {
-            actor_first.run();
-            actor_second.run();
-        }
     }
 
 
     @Test
     void nullSuppler() {
-        testAnySupplier(new NullSupplier());
+
+        for (int i = 0; i < 100_000; i++) {
+            Supplier<Object> supplier = new NullSupplier();
+            Lazy lazy = LazyFactory.createSingletonLazy(supplier);
+            Runnable runnable = runnableForAnySupplier(lazy);
+            Thread actor_first = new Thread();
+            Thread actor_second = new Thread();
+
+            actor_first.run();
+            actor_second.run();
+        }
     }
 
     @Test
     void simpleSupplier() {
-        testAnySupplier(new SimpleSupplier());
+        for (int i = 0; i < 100_000; i++) {
+            Supplier<Object> supplier = new SimpleSupplier();
+            Lazy lazy = LazyFactory.createSingletonLazy(supplier);
+            Runnable runnable = runnableForAnySupplier(lazy);
+            Thread actor_first = new Thread();
+            Thread actor_second = new Thread();
+
+            actor_first.run();
+            actor_second.run();
+        }
     }
 
     @Test
     void supplerWithCounter() {
-        testAnySupplier(new SupplierWithCounter());
+        for (int i = 0; i < 100_000; i++) {
+            Supplier<Object> supplier = new SupplierWithCounter();
+            Lazy lazy = LazyFactory.createSingletonLazy(supplier);
+            Runnable runnable = runnableForAnySupplier(lazy);
+            Thread actor_first = new Thread();
+            Thread actor_second = new Thread();
+
+            actor_first.run();
+            actor_second.run();
+        }
     }
 
 }
