@@ -65,8 +65,8 @@ class SingletonLazyTest {
             Supplier<Object> supplier = new NullSupplier();
             Lazy lazy = LazyFactory.createSingletonLazy(supplier);
             Runnable runnable = runnableForAnySupplier(lazy);
-            Thread actorFirst = new Thread();
-            Thread actorSecond = new Thread();
+            Thread actorFirst = new Thread(runnable);
+            Thread actorSecond = new Thread(runnable);
 
             actorFirst.run();
             actorSecond.run();
@@ -79,8 +79,8 @@ class SingletonLazyTest {
             Supplier<Object> supplier = new SimpleSupplier();
             Lazy lazy = LazyFactory.createSingletonLazy(supplier);
             Runnable runnable = runnableForAnySupplier(lazy);
-            Thread actorFirst = new Thread();
-            Thread actorSecond = new Thread();
+            Thread actorFirst = new Thread(runnable);
+            Thread actorSecond = new Thread(runnable);
 
             actorFirst.run();
             actorSecond.run();
@@ -93,11 +93,28 @@ class SingletonLazyTest {
             Supplier<Object> supplier = new SupplierWithCounter();
             Lazy lazy = LazyFactory.createSingletonLazy(supplier);
             Runnable runnable = runnableForAnySupplier(lazy);
-            Thread actorFirst = new Thread();
-            Thread actorSecond = new Thread();
+            Thread actorFirst = new Thread(runnable);
+            Thread actorSecond = new Thread(runnable);
 
             actorFirst.run();
             actorSecond.run();
+        }
+    }
+
+    @Test
+    void bigNumberOfThreads() {
+        for (int j = 0; j < 10; j++) {
+            Supplier<Object> supplier = new SupplierWithCounter();
+            Lazy lazy = LazyFactory.createSingletonLazy(supplier);
+            Runnable runnable = runnableForAnySupplier(lazy);
+
+            Thread[] threads = new Thread[1000];
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new Thread(runnable);
+            }
+            for (int i = 0; i < threads.length; i++) {
+                threads[i].run();
+            }
         }
     }
 
