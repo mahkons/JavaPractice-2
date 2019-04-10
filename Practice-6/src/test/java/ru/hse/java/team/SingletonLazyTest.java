@@ -48,7 +48,12 @@ class SingletonLazyTest {
     @Test
     void nullSuppler() {
         final Supplier<Object> supplier = new SimpleSupplier();
-
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Lazy lazy = LazyFactory.createSingletonLazy()
+            }
+        }
     }
 
     @Test
