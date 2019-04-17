@@ -19,7 +19,7 @@ public class CountdownLatch {
         lock.lock();
         try {
             while (counter != 0) {
-                zero.wait();
+                zero.await();
             }
         } finally {
             lock.unlock();
@@ -30,7 +30,7 @@ public class CountdownLatch {
         lock.lock();
         try {
             while (counter == 0) {
-                nonZero.wait();
+                nonZero.await();
             }
             counter--;
             if (counter == 0) {
