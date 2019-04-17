@@ -29,3 +29,6 @@ tasks.xml
 
 #gradle
 .gradle
+
+#out
+out/
