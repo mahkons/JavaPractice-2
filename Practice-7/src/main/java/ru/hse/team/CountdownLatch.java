@@ -42,7 +42,7 @@ public class CountdownLatch {
         }
     }
 
-    public void countUp() throws InterruptedException {
+    public void countUp() {
         lock.lock();
         try {
             counter++;
