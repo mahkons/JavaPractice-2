@@ -49,9 +49,9 @@ public class SimpleFtpServer {
 
             byte[] message;
             if (request.charAt(0) == '1') {
-                message = list(request.substring(2, request.length()));
+                message = list(request.substring(2));
             } else {
-                message = get(request.substring(2, request.length()));
+                message = get(request.substring(2));
             }
 
             buffer = ByteBuffer.wrap(message);
@@ -125,6 +125,11 @@ public class SimpleFtpServer {
                 keysIterator.remove();
             }
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        SimpleFtpServer server = new SimpleFtpServer();
+        server.start();
     }
 
     public void stop() {
