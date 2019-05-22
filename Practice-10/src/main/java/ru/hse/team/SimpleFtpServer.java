@@ -55,7 +55,6 @@ public class SimpleFtpServer {
             }
 
             ByteBuffer someBuffer = ByteBuffer.wrap(message);
-            someBuffer.flip();
             while (someBuffer.hasRemaining()) {
                 connection.write(someBuffer);
             }
