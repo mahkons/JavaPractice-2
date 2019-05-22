@@ -54,11 +54,12 @@ public class SimpleFtpServer {
                 message = get(request.substring(2));
             }
 
-            buffer = ByteBuffer.wrap(message);
-            while (connection.write(buffer) != -1) { }
+            ByteBuffer someBuffer = ByteBuffer.wrap(message);
+            while (connection.write(someBuffer) != -1) { }
         } catch (IOException exception) {
             //AAA
         }
+        buffer.clear();
     }
 
     private char isDirectoryChar(boolean flag) {
@@ -132,8 +133,10 @@ public class SimpleFtpServer {
         server.start();
     }
 
-    public void stop() {
+    public void stop() throws IOException {
         serverRunning = false;
         threadPool.shutdown();
+        serverSocketChannel.close();
+        selector.close();
     }
 }
