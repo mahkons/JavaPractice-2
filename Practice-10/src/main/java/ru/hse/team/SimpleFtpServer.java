@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -77,7 +78,8 @@ public class SimpleFtpServer {
         if (!Files.exists(path)) {
             message = "-1";
         } else {
-            message = Files.walk(path).map(x -> x + " " + isDirectoryChar(Files.isDirectory(path)) + " ").collect(Collectors.joining());
+            List<String> list = Files.walk(path).map(x -> x + " " + isDirectoryChar(Files.isDirectory(path))).collect(Collectors.toList());
+            message = list.size() + " " + String.join(" ", list);
         }
         return message.getBytes(StandardCharsets.UTF_8);
     }
