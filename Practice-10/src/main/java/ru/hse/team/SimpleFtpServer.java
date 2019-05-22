@@ -52,7 +52,7 @@ public class SimpleFtpServer {
         }
         buffer.flip();
 
-        String request = new String(buffer.array(), StandardCharsets.UTF_8);
+        String request = new String(buffer.array(), StandardCharsets.UTF_8).trim();
 
         try {
 
@@ -67,9 +67,11 @@ public class SimpleFtpServer {
             while (someBuffer.hasRemaining()) {
                 connection.write(someBuffer);
             }
+            connection.close();
         } catch (IOException exception) {
             //AAA
         }
+
         buffer.clear();
     }
 
