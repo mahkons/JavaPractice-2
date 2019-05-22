@@ -132,6 +132,7 @@ public class SimpleFtpServer {
                 } else if (key.isReadable()) {
 
                     SocketChannel connection = (SocketChannel) key.channel();
+                    connection.register(selector, 0);
                     threadPool.submit(() -> handleRequest((ByteBuffer)key.attachment(), connection));
 
                 }
