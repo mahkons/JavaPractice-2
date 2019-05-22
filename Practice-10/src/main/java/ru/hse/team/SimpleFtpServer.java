@@ -32,7 +32,7 @@ public class SimpleFtpServer {
     private Selector selector = Selector.open();
 
     private ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
-    private volatile boolean serverRunning = true;
+    private boolean serverRunning = true;
 
     public SimpleFtpServer() throws IOException {
         serverSocketChannel = ServerSocketChannel.open();
@@ -44,6 +44,14 @@ public class SimpleFtpServer {
     }
 
     private void handleRequest(ByteBuffer buffer, SocketChannel connection) {
+        try {
+            while (connection.read(buffer) != -1) {
+            }
+        } catch (IOException exception) {
+            //
+        }
+        buffer.flip();
+
         String request = new String(buffer.array(), StandardCharsets.UTF_8);
 
         try {
@@ -122,9 +130,7 @@ public class SimpleFtpServer {
                 } else if (key.isReadable()) {
 
                     SocketChannel connection = (SocketChannel) key.channel();
-                    if (connection.read((ByteBuffer)key.attachment()) == -1) {
-                        threadPool.submit(() -> handleRequest((ByteBuffer)key.attachment(), connection));
-                    }
+                    threadPool.submit(() -> handleRequest((ByteBuffer)key.attachment(), connection));
 
                 }
                 keysIterator.remove();
