@@ -25,16 +25,10 @@ public class ClientGUILogic {
             e.printStackTrace();
         }
 
-        TreeItem<String> rootItem = new TreeItem<>("/");
+        FileTreeItem rootItem = new FileTreeItem(new FileItem(".", true), client);
         rootItem.setExpanded(true);
 
-        try {
-            client.executeList("./src/main/java/ru/hse/team");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        TreeView<String> tree = new TreeView<> (rootItem);
+        TreeView<FileItem> tree = new TreeView<>(rootItem);
         StackPane root = new StackPane();
         root.getChildren().add(tree);
         scene = new Scene(root, ClientGUI.PREF_WIDTH, ClientGUI.PREF_HEIGHT);

@@ -1,15 +1,19 @@
 package ru.hse.team.gui;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import ru.hse.team.SimpleFtpClient;
 
+import java.io.IOException;
+
 public class FileTreeItem extends TreeItem<FileItem> {
 
     private final SimpleFtpClient client;
-    private boolean childrensConstructed;
+    private boolean childrenConstructed;
 
-    public FileTreeItem(SimpleFtpClient client) {
+    public FileTreeItem(FileItem item, SimpleFtpClient client) {
+        super(item);
         this.client = client;
     }
 
@@ -20,14 +24,24 @@ public class FileTreeItem extends TreeItem<FileItem> {
 
     @Override
     public ObservableList<TreeItem<FileItem>> getChildren() {
-        if (!childrensConstructed) {
-            childrensConstructed = true;
-            getChildren().addAll(constructChildren());
+        if (!childrenConstructed) {
+            childrenConstructed = true;
+            super.getChildren().addAll(constructChildren());
         }
-        return getChildren();
+        return super.getChildren();
     }
 
     private ObservableList<FileTreeItem> constructChildren() {
-        client.executeList()
+        String message = "";
+        try {
+            message = client.executeList(getValue().getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+            //AAAA
+        }
+        ObservableList<FileTreeItem> children = FXCollections.observableArrayList();
+        children.add(new FileTreeItem(new FileItem(message, false), client));
+
+        return children;
     }
 }
