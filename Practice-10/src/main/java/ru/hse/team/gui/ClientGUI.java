@@ -2,7 +2,9 @@ package ru.hse.team.gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -46,10 +48,20 @@ public class ClientGUI extends Application {
             String hostIP = host.getText();
             String portValue = port.getText();
 
-            if (isIPV4(hostIP) && checkPort(portValue)) {
-                var fileTree = new ClientGUILogic(hostIP, portValue);
-                fileTree.show(primaryStage);
+            if (!isIPV4(hostIP)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "IP does not match IPV4 format", ButtonType.CLOSE);
+                alert.show();
+                return;
             }
+
+            if (!checkPort(portValue)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Port should be an integer between 0 and 63535", ButtonType.CLOSE);
+                alert.show();
+                return;
+            }
+
+            var fileTree = new ClientGUILogic(hostIP, portValue);
+            fileTree.show(primaryStage);
         });
         pane.add(connectButton, 0, 2);
 
@@ -73,7 +85,12 @@ public class ClientGUI extends Application {
         if (portValue == null) {
             return false;
         }
-        int port = Integer.parseInt(portValue);
+        int port;
+        try {
+            port = Integer.parseInt(portValue);
+        } catch (NumberFormatException exception) {
+            return false;
+        }
         if (port < 0 || port >= 65536) {
             return false;
         }
