@@ -1,10 +1,15 @@
 package ru.hse.team;
 
+import ru.hse.team.gui.FileItem;
+
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.StringBufferInputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class SimpleFtpClient {
     private SocketChannel socketChannel;
@@ -19,6 +24,7 @@ public class SimpleFtpClient {
     }
 
     public String execute(int id, String path) throws IOException {
+        connect();
         var message = (id + " " + path).getBytes(StandardCharsets.UTF_8);
         var length = message.length;
         var sizeBuffer = ByteBuffer.allocate(4);
@@ -44,11 +50,21 @@ public class SimpleFtpClient {
         length = sizeBuffer.getInt();
         String response = new String(buffer.array(), 0, length, StandardCharsets.UTF_8);
         buffer.clear();
+        disconnect();
         return response;
     }
 
-    public String executeList(String path) throws IOException {
-        return execute(1, path);
+    public ArrayList<FileItem> executeList(String path) throws IOException {
+        var result = execute(1, path);
+        var list = new ArrayList<FileItem>();
+        var strings = result.split(" ");
+        int n = Integer.parseInt(strings[0]);
+        for (int i = 1; i < 2 * n + 1; i += 2) {
+            var name = strings[i];
+            var isDirectory = Integer.parseInt(strings[i + 1]);
+            list.add(new FileItem(name, isDirectory == 1));
+        }
+        return list;
     }
 
     public String executeGet(String path) throws IOException {
@@ -57,10 +73,8 @@ public class SimpleFtpClient {
 
     public static void main(String[] args) throws IOException {
         var client = new SimpleFtpClient();
-        client.connect();
-        // Только один запрос за раз!
+
         System.out.println(client.executeList("./src/main/java/ru/hse/team"));
-        //System.out.println(client.executeGet("./src/main/java/ru/hse/team/SimpleFtpClient.java"));
-        client.disconnect();
+        System.out.println(client.executeGet("./src/main/java/ru/hse/team/SimpleFtpClient.java"));
     }
 }

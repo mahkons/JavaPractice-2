@@ -1,8 +1,8 @@
 package ru.hse.team;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -13,14 +13,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class SimpleFtpServer {
@@ -184,22 +179,18 @@ public class SimpleFtpServer {
         return message.getBytes(StandardCharsets.UTF_8);
     }
 
-    private static byte[] get(String pathName) {
+    private static byte[] get(String pathName) throws IOException {
         System.out.println("Answer get request... " + pathName);
         String message = "";
         Path path = Paths.get(pathName);
 
-        try {
-            if (!Files.exists(path) || !Files.isRegularFile(path)) {
-                message = "-1";
-            } else {
-                try (var input = new FileInputStream(pathName)) {
-                    byte[] bytes = input.readAllBytes();
-                    message = bytes.length + " " + new String(bytes, StandardCharsets.UTF_8);
-                }
+        if (!Files.exists(path) || !Files.isRegularFile(path)) {
+            message = "-1";
+        } else {
+            try (var input = new FileInputStream(pathName)) {
+                byte[] bytes = input.readAllBytes();
+                message = bytes.length + " " + new String(bytes, StandardCharsets.UTF_8);
             }
-        } catch (IOException exception) {
-            //AA
         }
         System.out.println("Get answer is ready.");
         return message.getBytes(StandardCharsets.UTF_8);
