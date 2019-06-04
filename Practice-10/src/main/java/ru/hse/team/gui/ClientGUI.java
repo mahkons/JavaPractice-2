@@ -56,8 +56,6 @@ public class ClientGUI extends Application {
         return pane;
     }
 
-
-
     private static boolean isIPV4(String ipAddress) {
         if (ipAddress == null) {
             return false;
