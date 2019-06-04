@@ -6,6 +6,7 @@ import javafx.scene.control.TreeItem;
 import ru.hse.team.SimpleFtpClient;
 
 import java.io.IOException;
+import java.util.List;
 
 public class FileTreeItem extends TreeItem<FileItem> {
 
@@ -32,15 +33,17 @@ public class FileTreeItem extends TreeItem<FileItem> {
     }
 
     private ObservableList<FileTreeItem> constructChildren() {
-        String message = "";
+        List<FileItem> files;
         try {
-            message = client.executeList(getValue().getName());
+            files = client.executeList(getValue().getName());
         } catch (IOException e) {
             e.printStackTrace();
-            //AAAA
+            return FXCollections.emptyObservableList();
         }
         ObservableList<FileTreeItem> children = FXCollections.observableArrayList();
-        children.add(new FileTreeItem(new FileItem(message, false), client));
+        for (FileItem file : files) {
+            children.add(new FileTreeItem(file, client));
+        }
 
         return children;
     }
