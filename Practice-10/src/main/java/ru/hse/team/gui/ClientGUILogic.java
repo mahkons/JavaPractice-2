@@ -28,7 +28,7 @@ public class ClientGUILogic {
         FileTreeItem rootItem = new FileTreeItem(new FileItem(".", true), client);
         rootItem.setExpanded(true);
 
-        TreeView<FileItem> tree = new TreeView<>(rootItem);
+        var tree = new TreeView<>(rootItem);
         StackPane root = new StackPane();
         root.getChildren().add(tree);
         scene = new Scene(root, ClientGUI.PREF_WIDTH, ClientGUI.PREF_HEIGHT);

@@ -8,6 +8,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class ClientGUI extends Application {
 
@@ -43,8 +46,7 @@ public class ClientGUI extends Application {
             String hostIP = host.getText();
             String portValue = port.getText();
 
-            if (hostIP != "" && portValue != "") {
-                //TODO check better here
+            if (isIPV4(hostIP) && checkPort(portValue)) {
                 var fileTree = new ClientGUILogic(hostIP, portValue);
                 fileTree.show(primaryStage);
             }
@@ -53,6 +55,34 @@ public class ClientGUI extends Application {
 
         return pane;
     }
+
+
+
+    private static boolean isIPV4(String ipAddress) {
+        if (ipAddress == null) {
+            return false;
+        }
+        String ipPattern = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+                + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+        Pattern pattern = Pattern.compile(ipPattern);
+        Matcher matcher = pattern.matcher(ipAddress);
+        return matcher.matches();
+    }
+
+    private static boolean checkPort(String portValue) {
+        if (portValue == null) {
+            return false;
+        }
+        int port = Integer.parseInt(portValue);
+        if (port < 0 || port >= 65536) {
+            return false;
+        }
+        return true;
+    }
+
+
 
     public static void main(String[] args) {
         launch(args);
