@@ -40,7 +40,7 @@ public class FileItem {
     }
 
     /**
-     * Returns only Name of file without absolute path
+     * Returns only Name of file without absolute path.
      */
     @Override
     public String toString() {

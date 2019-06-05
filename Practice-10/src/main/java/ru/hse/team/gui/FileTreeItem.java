@@ -46,8 +46,9 @@ public class FileTreeItem extends TreeItem<FileItem> {
         }
         ObservableList<FileTreeItem> children = FXCollections.observableArrayList();
         for (FileItem file : files) {
-            if (!file.equals(getValue()))
+            if (!file.equals(getValue())) {
                 children.add(new FileTreeItem(file, client));
+            }
         }
 
         return children;

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * Ftp server.
- * Ansers list and get queries.
+ * Answers list and get queries.
  */
 public class SimpleFtpServer {
     private static final int INT_SIZE = 4;
@@ -30,7 +30,8 @@ public class SimpleFtpServer {
 
     private final Selector selector = Selector.open();
 
-    private ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
+    private ExecutorService threadPool = Executors.newFixedThreadPool(
+            Runtime.getRuntime().availableProcessors());
     private boolean serverRunning = true;
 
     public SimpleFtpServer(String hostName, int serverPort) throws IOException {
@@ -79,7 +80,8 @@ public class SimpleFtpServer {
                             var client = (Client) key.attachment();
                             System.out.println("Writing client " + client.toString());
                             client.channel.write(client.buffers);
-                            if (client.sizeBuffer.position() == INT_SIZE && client.buffer.position() == client.buffer.limit()) {
+                            if (client.sizeBuffer.position() == INT_SIZE && client.buffer.position()
+                                    == client.buffer.limit()) {
                                 System.out.println("Write client " + client.toString() + " fully.");
                                 client.buffer.clear();
                                 client.sizeBuffer.clear();
@@ -116,7 +118,8 @@ public class SimpleFtpServer {
                 client.sizeBuffer.clear();
                 String request = new String(data, StandardCharsets.UTF_8);
                 byte[] respondData;
-                assert request.length() > 2 && (request.startsWith("1 ") || request.startsWith("2 "));
+                assert request.length() > 2 && (request.startsWith("1 ")
+                        || request.startsWith("2 "));
                 if (request.charAt(0) == '1') {
                     respondData = list(request.substring(2));
                 } else {
@@ -165,10 +168,7 @@ public class SimpleFtpServer {
 
 
     private static char isDirectoryChar(boolean flag) {
-        if (flag)
-            return '1';
-        else
-            return '0';
+        return (flag ? '1' : '0');
     }
 
     private static byte[] list(String pathName) throws IOException {
@@ -178,7 +178,8 @@ public class SimpleFtpServer {
         if (!Files.exists(path)) {
             message = "-1";
         } else {
-            List<String> list = Files.walk(path, 1).map(x -> x + " " + isDirectoryChar(x.toFile().isDirectory())).collect(Collectors.toList());
+            List<String> list = Files.walk(path, 1).map(x -> x + " " +
+                    isDirectoryChar(x.toFile().isDirectory())).collect(Collectors.toList());
             message = list.size() + " " + String.join(" ", list);
         }
         System.out.println("List answer is ready.");

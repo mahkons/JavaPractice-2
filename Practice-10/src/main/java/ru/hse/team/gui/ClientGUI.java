@@ -54,7 +54,8 @@ public class ClientGUI extends Application {
             String portValue = port.getText();
 
             if (!checkPort(portValue)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Port should be an integer between 0 and 63535", ButtonType.CLOSE);
+                Alert alert = new Alert(Alert.AlertType.ERROR,
+                        "Port should be an integer between 0 and 63535", ButtonType.CLOSE);
                 alert.show();
                 return;
             }
