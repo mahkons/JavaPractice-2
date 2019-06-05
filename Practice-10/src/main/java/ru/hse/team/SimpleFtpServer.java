@@ -43,7 +43,7 @@ public class SimpleFtpServer {
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
     }
 
-    private void start() {
+    public void start() {
         new Thread(() -> {
             try {
                 while (serverRunning) {
