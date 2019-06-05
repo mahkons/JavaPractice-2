@@ -60,8 +60,8 @@ public class ClientGUI extends Application {
                 return;
             }
 
-            var fileTree = new ClientGUILogic(hostIP, portValue);
-            fileTree.show(primaryStage);
+            var fileTree = new ClientGUILogic(hostIP, portValue, primaryStage);
+            fileTree.show();
         });
         pane.add(connectButton, 0, 2);
 
