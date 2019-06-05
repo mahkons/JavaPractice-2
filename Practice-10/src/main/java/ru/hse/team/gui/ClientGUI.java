@@ -14,6 +14,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+/**
+ * Application which let user to go through directories on server
+ *  and downloads files from server.
+ * On start user should write host name and port, valid for currently working server
+ */
 public class ClientGUI extends Application {
 
     private static int MIN_WIDTH = 200;

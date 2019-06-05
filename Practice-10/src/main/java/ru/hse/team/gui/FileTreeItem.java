@@ -8,6 +8,10 @@ import ru.hse.team.SimpleFtpClient;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Tree of files on server.
+ * Every directory will be downloaded once only on first demand
+ */
 public class FileTreeItem extends TreeItem<FileItem> {
 
     private final SimpleFtpClient client;

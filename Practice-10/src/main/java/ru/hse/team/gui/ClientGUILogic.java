@@ -15,6 +15,10 @@ import java.nio.charset.StandardCharsets;
 
 import ru.hse.team.SimpleFtpClient;
 
+/**
+ * User interface for moving through directories and downloading files.
+ * File is downloaded on Enter key pressing
+ */
 public class ClientGUILogic {
 
     private SimpleFtpClient client;
@@ -37,7 +41,10 @@ public class ClientGUILogic {
             var selectedItems = tree.getSelectionModel().getSelectedItems();
 
             for (TreeItem<FileItem> item : selectedItems) {
-
+                if (item.getValue().isDirectory()) {
+                    item.setExpanded(true);
+                    continue;
+                }
                 FileChooser chooser = new FileChooser();
                 File fileToSave = chooser.showSaveDialog(primaryStage);
                 if (fileToSave != null) {
@@ -67,6 +74,9 @@ public class ClientGUILogic {
         return message.substring(pos + 1);
     }
 
+    /**
+     * Shows screen on stage provided in constructor.
+     */
     public void show() {
         primaryStage.setScene(scene);
     }

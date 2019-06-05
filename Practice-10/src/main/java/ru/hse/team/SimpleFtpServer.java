@@ -17,6 +17,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+/**
+ * Ftp server.
+ * Ansers list and get queries.
+ */
 public class SimpleFtpServer {
     private static final int INT_SIZE = 4;
     private static int bufferSize = 4048;
@@ -38,7 +42,7 @@ public class SimpleFtpServer {
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
     }
 
-    public void start() {
+    private void start() {
         new Thread(() -> {
             try {
                 while (serverRunning) {

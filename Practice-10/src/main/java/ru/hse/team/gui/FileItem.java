@@ -3,6 +3,10 @@ package ru.hse.team.gui;
 import java.nio.file.Path;
 import java.util.Objects;
 
+/**
+ * File item which keeps
+ *  path to file and whether a file is directory.
+ */
 public class FileItem {
 
     private final String name;
@@ -35,6 +39,9 @@ public class FileItem {
         return Objects.hash(getName(), isDirectory());
     }
 
+    /**
+     * Returns only Name of file without absolute path
+     */
     @Override
     public String toString() {
         return Path.of(name).getFileName().toString();

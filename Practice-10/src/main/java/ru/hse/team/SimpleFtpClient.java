@@ -2,15 +2,17 @@ package ru.hse.team;
 
 import ru.hse.team.gui.FileItem;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.StringBufferInputStream;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/**
+ * Client for FTP server.
+ * Supports list and get queries.
+ */
 public class SimpleFtpClient {
 
     private SocketChannel socketChannel;
@@ -31,7 +33,7 @@ public class SimpleFtpClient {
         socketChannel.close();
     }
 
-    public String execute(int id, String path) throws IOException {
+    private String execute(int id, String path) throws IOException {
         connect();
         var message = (id + " " + path).getBytes(StandardCharsets.UTF_8);
         var length = message.length;
@@ -62,6 +64,9 @@ public class SimpleFtpClient {
         return response;
     }
 
+    /**
+     * List all files in the given directory on server.
+     */
     public ArrayList<FileItem> executeList(String path) throws IOException {
         var result = execute(1, path);
         var list = new ArrayList<FileItem>();
@@ -75,6 +80,10 @@ public class SimpleFtpClient {
         return list;
     }
 
+    /**
+     * Downloads file content from server.
+     * Returns "-1" if there is no such directory
+     */
     public String executeGet(String path) throws IOException {
         return execute(2, path);
     }
