@@ -1,7 +1,11 @@
 package ru.hse.team.gui;
 
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -17,30 +21,34 @@ public class ClientGUILogic {
     private final Scene scene;
     private final Stage primaryStage;
 
-    public ClientGUILogic(String hostIp, String port, Stage primaryStage) {
+    public ClientGUILogic(String hostName, String port, Stage primaryStage) {
         this.primaryStage = primaryStage;
-        client = new SimpleFtpClient();
+        client = new SimpleFtpClient(hostName, Integer.parseInt(port));
 
         FileTreeItem rootItem = new FileTreeItem(new FileItem(".", true), client);
         rootItem.setExpanded(true);
 
         var tree = new TreeView<>(rootItem);
-        tree.getSelectionModel().selectedItemProperty().addListener((observable, old_val, new_val) -> {
-            if (observable.getValue().getValue().isDirectory()) {
+
+        tree.setOnKeyPressed(event -> {
+            if (event.getCode() != KeyCode.ENTER) {
                 return;
             }
+            var selectedItems = tree.getSelectionModel().getSelectedItems();
 
-            FileChooser chooser = new FileChooser();
-            File fileToSave = chooser.showSaveDialog(primaryStage);
-            if (fileToSave != null) {
-                try (var output = new FileOutputStream(fileToSave)) {
-                    output.write(getFile(observable.getValue().getValue()).getBytes(StandardCharsets.UTF_8));
-                } catch (IOException e) {
-                    //AAAA
-                    e.printStackTrace();
+            for (TreeItem<FileItem> item : selectedItems) {
+
+                FileChooser chooser = new FileChooser();
+                File fileToSave = chooser.showSaveDialog(primaryStage);
+                if (fileToSave != null) {
+                    try (var output = new FileOutputStream(fileToSave)) {
+                        output.write(getFile(item.getValue()).getBytes(StandardCharsets.UTF_8));
+                    } catch (IOException e) {
+                        //AAAA
+                        e.printStackTrace();
+                    }
                 }
             }
-
         });
         StackPane root = new StackPane();
         root.getChildren().add(tree);

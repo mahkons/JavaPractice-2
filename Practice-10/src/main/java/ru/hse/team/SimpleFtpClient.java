@@ -12,10 +12,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class SimpleFtpClient {
+
     private SocketChannel socketChannel;
+    private final String hostName;
+    private final int port;
+
+    public SimpleFtpClient(String hostName, int port) {
+        this.hostName = hostName;
+        this.port = port;
+    }
 
     public void connect() throws IOException {
-        InetSocketAddress address = new InetSocketAddress("localhost", 9999);
+        InetSocketAddress address = new InetSocketAddress(hostName, port);
         socketChannel = SocketChannel.open(address);
     }
 
@@ -72,7 +80,7 @@ public class SimpleFtpClient {
     }
 
     public static void main(String[] args) throws IOException {
-        var client = new SimpleFtpClient();
+        var client = new SimpleFtpClient("localhost", 9999);
 
         System.out.println(client.executeList("./src/main/java/ru/hse/team"));
         System.out.println(client.executeGet("./src/main/java/ru/hse/team/SimpleFtpClient.java"));

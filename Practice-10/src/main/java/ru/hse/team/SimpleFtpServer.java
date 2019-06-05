@@ -1,6 +1,5 @@
 package ru.hse.team;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -20,18 +19,21 @@ import java.util.stream.Collectors;
 
 public class SimpleFtpServer {
     private static final int INT_SIZE = 4;
-    private static int serverPort = 9999;
     private static int bufferSize = 4048;
     private final ServerSocketChannel serverSocketChannel;
+    private final int serverPort;
+    private final String hostName;
 
     private final Selector selector = Selector.open();
 
     private ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
     private boolean serverRunning = true;
 
-    public SimpleFtpServer() throws IOException {
+    public SimpleFtpServer(String hostName, int serverPort) throws IOException {
+        this.hostName = hostName;
+        this.serverPort = serverPort;
         serverSocketChannel = ServerSocketChannel.open();
-        serverSocketChannel.socket().bind(new InetSocketAddress(serverPort));
+        serverSocketChannel.socket().bind(new InetSocketAddress(this.serverPort));
         serverSocketChannel.configureBlocking(false);
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
     }
@@ -146,7 +148,7 @@ public class SimpleFtpServer {
 
 
     public static void main(String[] args) throws IOException {
-        SimpleFtpServer server = new SimpleFtpServer();
+        SimpleFtpServer server = new SimpleFtpServer("localhost", 9999);
         server.start();
     }
 

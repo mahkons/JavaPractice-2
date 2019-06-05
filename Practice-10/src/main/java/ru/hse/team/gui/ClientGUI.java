@@ -45,14 +45,8 @@ public class ClientGUI extends Application {
 
         var connectButton = new Button("connect");
         connectButton.setOnAction(event -> {
-            String hostIP = host.getText();
+            String hostName = host.getText();
             String portValue = port.getText();
-
-            if (!isIPV4(hostIP)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "IP does not match IPV4 format", ButtonType.CLOSE);
-                alert.show();
-                return;
-            }
 
             if (!checkPort(portValue)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Port should be an integer between 0 and 63535", ButtonType.CLOSE);
@@ -60,7 +54,7 @@ public class ClientGUI extends Application {
                 return;
             }
 
-            var fileTree = new ClientGUILogic(hostIP, portValue, primaryStage);
+            var fileTree = new ClientGUILogic(hostName, portValue, primaryStage);
             fileTree.show();
         });
         pane.add(connectButton, 0, 2);
