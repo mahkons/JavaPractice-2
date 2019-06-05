@@ -61,10 +61,12 @@ class SimpleFtpClientTest {
     }
 
     @Test
-    void listEmptyDir() throws IOException {
+    void listAlmostEmptyDir() throws IOException {
         var client = new SimpleFtpClient(localHost, port);
-        List<FileItem> fileItems = client.executeList("src/test/resources/dir1/dir2/dir3/dir4");
-        List<FileItem> expectedItems = Collections.singletonList(new FileItem("src/test/resources/dir1/dir2/dir3/dir4", true));
+        List<FileItem> fileItems = client.executeList("src/test/resources/dir1");
+        List<FileItem> expectedItems = Arrays.asList(
+                new FileItem("src/test/resources/dir1", true),
+                new FileItem("src/test/resources/dir1/dir2", true));
 
         compareFileLists(expectedItems, fileItems);
     }
