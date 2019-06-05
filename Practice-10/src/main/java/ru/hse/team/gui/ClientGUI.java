@@ -1,6 +1,8 @@
 package ru.hse.team.gui;
 
 import javafx.application.Application;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -40,13 +42,15 @@ public class ClientGUI extends Application {
     private Pane createContent(Stage primaryStage) {
         var pane = new GridPane();
         pane.setPrefSize(PREF_WIDTH, PREF_HEIGHT);
+        pane.setAlignment(Pos.CENTER);
 
         var host = new TextField("host");
         pane.add(host, 0, 0);
+        host.setAlignment(Pos.CENTER);
+
         var port = new TextField("port");
         pane.add(port, 0, 1);
-
-
+        port.setAlignment(Pos.CENTER);
 
         var connectButton = new Button("connect");
         connectButton.setOnAction(event -> {
@@ -64,6 +68,8 @@ public class ClientGUI extends Application {
             fileTree.show();
         });
         pane.add(connectButton, 0, 2);
+        connectButton.setAlignment(Pos.CENTER);
+        GridPane.setHalignment(connectButton, HPos.CENTER);
 
         return pane;
     }
